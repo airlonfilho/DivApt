@@ -38,11 +38,21 @@ export default function Login({ navigation }) {
       <TextInput 
         autoCapitalize="none"
         autoCorrect={false}
-        placeholder="Digite seu usuário no Github"
+        placeholder="Digite seu email"
         placeholderTextColor="#999"
         style={styles.input}
         value={user}
         onChangeText={setUser}
+      />
+    
+    <TextInput 
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder="Digite sua senha"
+        placeholderTextColor="#999"
+        style={styles.input}
+        value={}
+        onChangeText={}
       />
 
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
