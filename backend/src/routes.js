@@ -1,14 +1,14 @@
 const express = require('express');
-const UserController = require('./controllers/UserController');
+const DevController = require('./controllers/DevController');
 const LikeController = require('./controllers/LikeController');
 const DislikeController = require('./controllers/DislikeController');
 
 const routes = express.Router();
 
-routes.get('/users', UserController.index);
-routes.post('/users', UserController.store);
+routes.get('/devs', DevController.index);
+routes.post('/devs', DevController.store);
 
-routes.post('/users/:userId/likes', LikeController.store);
-routes.post('/users/:userId/dislikes', DislikeController.store);
+routes.post('/devs/:devId/likes', LikeController.store);
+routes.post('/devs/:devId/dislikes', DislikeController.store);
 
 module.exports = routes;

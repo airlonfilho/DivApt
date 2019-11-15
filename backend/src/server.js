@@ -16,8 +16,10 @@ io.on('connection', socket => {
   connectedUsers[user] = socket.id;
 });
 
-mongoose.connect('mongodb+srv://airlonfilho:20hk8haF@@cluster0-1bb6n.mongodb.net/test?retryWrites=true&w=majority', {
-  useNewUrlParser: true
+mongoose.connect('mongodb+srv://filho:20hk8h@divapt-1bb6n.mongodb.net/test?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: true
 });
 
 app.use((req, res, next) => {
@@ -31,4 +33,4 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-server.listen(3333);
+server.listen(3338);

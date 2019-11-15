@@ -1,24 +1,24 @@
-const Dev = require('../models/Dev');
+const Usuario = require('../models/Usuario');
 
 module.exports = {
   async store(req, res) {
     const { user } = req.headers;
-    const { devId } = req.params;
+    const { usuarioId } = req.params;
 
-    const loggedDev = await Dev.findById(user);
-    let targetDev = null
+    const loggedUsuario = await Usuario.findById(user);
+    let targetUsuario = null
 
     try {
-      targetDev = await Dev.findById(devId);
+      targetUsuario = await Usuario.findById(usuarioId);
     } catch (error) {
-      return res.status(400).json({ error: 'Dev not exists' });
+      return res.status(400).json({ error: 'Usuario not exists' });
     }
     
 
-    loggedDev.dislikes.push(targetDev._id);
+    loggedUsuario.dislikes.push(targetUsuario._id);
 
-    await loggedDev.save();
+    await loggedUsuario.save();
 
-    return res.json(loggedDev);
+    return res.json(loggedUsuario);
   }
 };

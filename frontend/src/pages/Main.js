@@ -12,11 +12,11 @@ import itsamatch from '../assets/itsamatch.png';
 
 export default function Main({ match }) {
   const [users, setUsers] = useState([]);
-  const [matchUser, setMatchUser] = useState(null);
+  const [matchUsuario, setMatchUsuario] = useState(null);
 
   useEffect(() => {
     async function loadUsers() {
-      const response = await api.get('/users', {
+      const response = await api.get('/usuarios', {
         headers: {
           user: match.params.id,
         }
@@ -29,25 +29,29 @@ export default function Main({ match }) {
   }, [match.params.id]);
 
   useEffect(() => {
-    const socket = io('http://localhost:3333', {
+    const socket = io('http://localhost:3338', {
       query: { user: match.params.id }
     });
 
-    socket.on('match', user => {
-      setMatchUser(user);
+    socket.on('match', usuario => {
+      setMatchUsuario(usuario);
     })
   }, [match.params.id]);
 
   async function handleLike(id) {
-    await api.post(`/users/${id}/likes`, null, {
+    await api.post(`/usuarios/${id}/likes`, null, {
       headers: { user: match.params.id },
     })
 
     setUsers(users.filter(user => user._id !== id));
   }
 
+  function chamanozap(){
+    window.open('https://api.whatsapp.com/send?phone=5588996644768');
+  }
+
   async function handleDislike(id) {
-    await api.post(`/users/${id}/dislikes`, null, {
+    await api.post(`/usuarios/${id}/dislikes`, null, {
       headers: { user: match.params.id },
     })
 
@@ -57,9 +61,8 @@ export default function Main({ match }) {
   return (
     <div className="main-container">
       <Link to="/">
-        <img src={logo} alt="DivApt" />
+        <img src={logo} alt="DivApt" width="50px" />
       </Link>
-
       { users.length > 0 ? (
         <ul>  
           {users.map(user => (
@@ -82,18 +85,18 @@ export default function Main({ match }) {
           ))}
         </ul>
       ) : (
-        <div className="empty">Acabou :(</div>
+        <div className="empty">Não existe pessoas nessa cidade :(</div>
       ) }
 
-      { matchUser && (
+      { matchUsuario && (
         <div className="match-container">
           <img src={itsamatch} alt="It's a match" />
 
-          <img className="avatar" src={matchUser.avatar} alt=""/>
-          <strong>{matchUser.name}</strong>
-          <p>{matchUser.bio}</p>
+          <img className="avatar" src={matchUsuario.avatar} alt=""/>
+          <strong>{matchUsuario.name}</strong>
+          <p>{matchUsuario.bio}</p>
 
-          <button type="button" onClick={() => setMatchUser(null)}>FECHAR</button>
+          <button type="button" onClick={() => chamanozap()}>Chamar no zap</button>
         </div>
       ) }
     </div>

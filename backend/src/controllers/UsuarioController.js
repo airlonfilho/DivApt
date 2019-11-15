@@ -1,17 +1,17 @@
 const axios = require('axios');
-const User = require('../models/User');
+const Usuario = require('../models/Usuario');
 
 module.exports = {
   async index(req, res) {
     const { user } = req.headers;
 
-    const loggedUser = await User.findById(user);
+    const loggedUsuario = await Usuario.findById(user);
 
-    const users = await User.find({
+    const users = await Usuario.find({
       $and: [
         { _id: { $ne: user } },
-        { _id: { $nin: loggedUser.likes } },
-        { _id: { $nin: loggedUser.dislikes } },
+        { _id: { $nin: loggedUsuario.likes } },
+        { _id: { $nin: loggedUsuario.dislikes } },
       ],
     })
 
@@ -21,7 +21,7 @@ module.exports = {
   async store(req, res) {
     const { username } = req.body;
 
-    const userExists = await User.findOne({ user: username });
+    const userExists = await Usuario.findOne({ user: username });
 
     if (userExists) {
       return res.json(userExists);
@@ -31,13 +31,13 @@ module.exports = {
 
     const { name, bio, avatar_url: avatar } = response.data;
 
-    const user = await User.create({
+    const usuario = await Usuario.create({
       name,
       user: username,
       bio,
       avatar
     })
 
-    return res.json(user);
+    return res.json(usuario);
   }
 };

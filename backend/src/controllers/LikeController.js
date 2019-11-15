@@ -1,38 +1,38 @@
-const Dev = require('../models/Dev');
+const Usuario = require('../models/Usuario');
 
 module.exports = {
   async store(req, res) {
     console.log(req.io, req.connectedUsers);
 
     const { user } = req.headers;
-    const { devId } = req.params;
+    const { usuarioId } = req.params;
 
-    const loggedDev = await Dev.findById(user);
-    let targetDev = null
+    const loggedUsuario = await Usuario.findById(user);
+    let targetUsuario = null
 
     try {
-      targetDev = await Dev.findById(devId);
+      targetUsuario = await Usuario.findById(usuarioId);
     } catch (error) {
-      return res.status(400).json({ error: 'Dev not exists' });
+      return res.status(400).json({ error: 'Usuario not exists' });
     }
 
-    if (targetDev.likes.includes(loggedDev._id)) {
+    if (targetUsuario.likes.includes(loggedUsuario._id)) {
       const loggedSocket = req.connectedUsers[user];
-      const targetSocket = req.connectedUsers[devId];
+      const targetSocket = req.connectedUsers[usuarioId];
 
       if (loggedSocket) {
-        req.io.to(loggedSocket).emit('match', targetDev);
+        req.io.to(loggedSocket).emit('match', targetUsuario);
       }
 
       if (targetSocket) {
-        req.io.to(targetSocket).emit('match', loggedDev);
+        req.io.to(targetSocket).emit('match', loggedUsuario);
       }
     }
 
-    loggedDev.likes.push(targetDev._id);
+    loggedUsuario.likes.push(targetUsuario._id);
 
-    await loggedDev.save();
+    await loggedUsuario.save();
 
-    return res.json(loggedDev);
+    return res.json(loggedUsuario);
   }
 };
